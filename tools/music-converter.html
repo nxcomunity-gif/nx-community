@@ -55,11 +55,53 @@
         <span>0.1× (pelan)</span><b id="volLabel" style="color:var(--accent);">1.0×</b><span>2× (keras)</span>
       </div>
 
+      <label class="field">Equalizer (atur 6 band, default flat 0dB)</label>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px 16px;">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);">
+            <span>60Hz</span><b id="eq0lb" style="color:var(--accent);">0</b>
+          </div>
+          <input type="range" class="eq" id="eq0" min="-12" max="12" step="1" value="0" style="width:100%;accent-color:var(--accent);">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);">
+            <span>170Hz</span><b id="eq1lb" style="color:var(--accent);">0</b>
+          </div>
+          <input type="range" class="eq" id="eq1" min="-12" max="12" step="1" value="0" style="width:100%;accent-color:var(--accent);">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);">
+            <span>350Hz</span><b id="eq2lb" style="color:var(--accent);">0</b>
+          </div>
+          <input type="range" class="eq" id="eq2" min="-12" max="12" step="1" value="0" style="width:100%;accent-color:var(--accent);">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);">
+            <span>1kHz</span><b id="eq3lb" style="color:var(--accent);">0</b>
+          </div>
+          <input type="range" class="eq" id="eq3" min="-12" max="12" step="1" value="0" style="width:100%;accent-color:var(--accent);">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);">
+            <span>3.5kHz</span><b id="eq4lb" style="color:var(--accent);">0</b>
+          </div>
+          <input type="range" class="eq" id="eq4" min="-12" max="12" step="1" value="0" style="width:100%;accent-color:var(--accent);">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);">
+            <span>10kHz</span><b id="eq5lb" style="color:var(--accent);">0</b>
+          </div>
+          <input type="range" class="eq" id="eq5" min="-12" max="12" step="1" value="0" style="width:100%;accent-color:var(--accent);">
+        </div>
+      </div>
+      <button class="btn btn-ghost" id="eqReset" style="width:100%;margin-top:8px;justify-content:center;">↺ Reset EQ ke Flat</button>
+
       <label class="field">Opsi</label>
       <ul class="checklist" style="margin-bottom:8px;">
         <li><input type="checkbox" id="optNormalize" checked><div><b>Normalisasi volume</b><small>Naikin volume ke level aman biar nggak kedengeran kecil di game.</small></div></li>
         <li><input type="checkbox" id="optTrim" checked><div><b>Potong ke maksimal 7 menit</b><small>Batas upload Roblox — 7 menit (420 detik).</small></div></li>
         <li><input type="checkbox" id="optSilence" checked><div><b>Hilangkan senyap di awal</b><small>Buang <i>dead air</i> beberapa detik pertama.</small></div></li>
+        <li><input type="checkbox" id="optHighpass" checked><div><b>High-pass filter 40Hz</b><small>Buang dengung bass di bawah 40Hz biar suara lebih bersih.</small></div></li>
       </ul>
 
       <button class="btn btn-primary" id="convertBtn" style="width:100%;margin-top:16px;" disabled>🎛️ Proses & Convert</button>
@@ -72,6 +114,11 @@
       <div class="result" id="result" hidden>
         <h3 style="margin-bottom:8px;">✅ Udah siap!</h3>
         <p style="color:var(--muted);font-size:0.9rem;" id="resultInfo"></p>
+        <div style="margin:14px 0;">
+          <div style="font-size:0.82rem;color:var(--muted);margin-bottom:6px;">👂 Preview dulu:</div>
+          <audio id="previewAudio" controls style="width:100%;"></audio>
+        </div>
+        <div id="passCheck" style="margin-bottom:14px;"></div>
         <div style="display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;">
           <button class="btn btn-primary" id="downloadBtn">⬇ Download WAV</button>
           <label class="btn btn-ghost" style="cursor:pointer;" for="fileInput">🔄 Convert lagu lain</label>

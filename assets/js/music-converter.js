@@ -15,9 +15,20 @@
   var progress = document.getElementById("progress");
   var progressBar = document.getElementById("progressBar");
   var progressLabel = document.getElementById("progressLabel");
+  var optHighpass = document.getElementById("optHighpass");
   var result = document.getElementById("result");
   var resultInfo = document.getElementById("resultInfo");
+  var passCheck = document.getElementById("passCheck");
+  var previewAudio = document.getElementById("previewAudio");
   var downloadBtn = document.getElementById("downloadBtn");
+  var eqSliders = [0, 1, 2, 3, 4, 5].map(function (i) {
+    return document.getElementById("eq" + i);
+  });
+  var eqLabels = [0, 1, 2, 3, 4, 5].map(function (i) {
+    return document.getElementById("eq" + i + "lb");
+  });
+  var eqReset = document.getElementById("eqReset");
+  var EQ_FREQS = [60, 170, 350, 1000, 3500, 10000];
 
   var sourceBuffer = null; // AudioBuffer hasil decode
   var sourceName = "";
@@ -124,8 +135,36 @@
     var src = ctx.createBufferSource();
     src.buffer = sourceBuffer;
 
+    var last = src;
+
+    // High-pass 40Hz: buang dengung sub-bass.
+    if (optHighpass.checked) {
+      var hp = ctx.createBiquadFilter();
+      hp.type = "highpass";
+      hp.frequency.value = 40;
+      hp.Q.value = 0.707;
+      last.connect(hp);
+      last = hp;
+    }
+
+    // Equalizer 6 band (peaking filter).
+    var eqGains = eqSliders.map(function (s) { return parseFloat(s.value); });
+    var adaEq = eqGains.some(function (g) { return g !== 0; });
+    if (adaEq) {
+      for (var ei = 0; ei < eqSliders.length; ei++) {
+        if (eqGains[ei] === 0) continue;
+        var f = ctx.createBiquadFilter();
+        f.type = "peaking";
+        f.frequency.value = EQ_FREQS[ei];
+        f.Q.value = 1;
+        f.gain.value = eqGains[ei];
+        last.connect(f);
+        last = f;
+      }
+    }
+
     var gainNode = ctx.createGain();
-    src.connect(gainNode);
+    last.connect(gainNode);
     gainNode.connect(ctx.destination);
 
     // Kalau kepotong dari tengah-tengah source, offset start-nya.
@@ -201,6 +240,29 @@
       catatan.join(" · ") +
       (potong ? "<br>⚠️ Audio asli lebih dari 7 menit — udah dipotong ke 7 menit (batas Roblox)." : "");
 
+    // Checklist "lolos/gagal" upload Roblox.
+    var cek = [];
+    if (durFinal <= 420) {
+      cek.push('<span class="tag tag-g">✓ Durasi ' + durFinal.toFixed(1) + 's (≤ 7 menit) — OK</span>');
+    } else {
+      cek.push('<span class="tag tag-r">✗ Durasi melebihi 7 menit — potong dulu</span>');
+    }
+    if (wavBlob.size <= 10 * 1024 * 1024) {
+      cek.push('<span class="tag tag-g">✓ Ukuran ' + sizeMB + ' MB (≤ 10 MB) — OK</span>');
+    } else {
+      cek.push('<span class="tag tag-y">⚠ Ukuran ' + sizeMB + ' MB — coba 22050Hz / Mono buat kecilin</span>');
+    }
+    if (outRate === 44100) {
+      cek.push('<span class="tag tag-g">✓ Sample rate 44100Hz — OK buat Roblox</span>');
+    } else {
+      cek.push('<span class="tag tag-y">⚠ Sample rate ' + outRate + 'Hz — Roblox paling nyaman di 44100Hz</span>');
+    }
+    passCheck.innerHTML = '<div style="display:flex;gap:8px;flex-wrap:wrap;">' + cek.join("") + "</div>";
+
+    // Preview dengar hasilnya.
+    if (previewAudio.src) URL.revokeObjectURL(previewAudio.src);
+    previewAudio.src = URL.createObjectURL(wavBlob);
+
     result.hidden = false;
     convertBtn.disabled = false;
   }
@@ -244,6 +306,22 @@
 
   volSlider.addEventListener("input", function () {
     volLabel.textContent = parseFloat(volSlider.value).toFixed(1) + "×";
+  });
+
+  // EQ slider → label live.
+  eqSliders.forEach(function (s, i) {
+    s.addEventListener("input", function () {
+      var v = parseFloat(s.value);
+      eqLabels[i].textContent = (v > 0 ? "+" : "") + v;
+    });
+  });
+
+  // Reset EQ ke flat (0 dB semua).
+  eqReset.addEventListener("click", function () {
+    eqSliders.forEach(function (s, i) {
+      s.value = 0;
+      eqLabels[i].textContent = "0";
+    });
   });
 
   dropzone.addEventListener("click", function () { fileInput.click(); });
