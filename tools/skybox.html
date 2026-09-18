@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skybox Converter — NX Tools</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <header>
+    <nav class="nav">
+      <a class="brand" href="../">
+        <span class="logo">⚡</span> NX Tools
+      </a>
+      <div class="nav-links">
+        <a href="../">Home</a>
+        <a href="../tools/skybox.html" class="active">Skybox Converter</a>
+        <a href="../tools/bypaslag.html">Bypass Lag</a>
+        <a class="btn-discord" href="#" target="_blank" rel="noopener">Join Discord</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="tool-wrap">
+    <h1 style="margin-top:36px;">🖼️ Skybox Converter</h1>
+    <p class="section-sub">Upload gambar panorama (2:1 / equirectangular) → langsung dipecah jadi 6 sisi skybox siap pasang di Roblox Studio.</p>
+
+    <div class="tool-box">
+      <h2>1. Upload Gambar</h2>
+      <p class="desc">Format panorama 2:1 (lebar = 2× tinggi). Diproses di browser, nggak ada yang di-upload.</p>
+
+      <div class="dropzone" id="dropzone">
+        <div><b>Klik / drag gambar di sini</b></div>
+        <div style="margin-top:6px;">PNG / JPG — maks 20 MB</div>
+        <input type="file" id="fileInput" accept="image/*" hidden>
+      </div>
+
+      <label class="field">Ukuran per sisi</label>
+      <select id="size">
+        <option value="512">512 × 512 (hemat)</option>
+        <option value="1024" selected>1024 × 1024 (recommended)</option>
+        <option value="2048">2048 × 2048 (HD)</option>
+      </select>
+
+      <button class="btn btn-primary" id="convertBtn" style="width:100%;margin-top:20px;" disabled>Konversi ke Skybox</button>
+
+      <div class="preview" id="preview" hidden>
+        <img id="previewImg" alt="preview">
+      </div>
+
+      <div class="progress" id="progress" hidden>
+        <div class="bar" id="progressBar"></div>
+      </div>
+      <div class="progress-label" id="progressLabel" hidden></div>
+
+      <div class="result" id="result" hidden>
+        <h3 style="margin-bottom:12px;">✅ Siap Download — 6 sisi</h3>
+        <p style="color:var(--muted);font-size:0.88rem;margin-bottom:14px;">
+          Pasang di Roblox Studio: pilih part → tambah <b>Sky</b> → isi properti Front/Back/Left/Right sesuai label di bawah.
+        </p>
+        <div class="face-grid" id="faceGrid"></div>
+      </div>
+    </div>
+
+    <div class="tool-box">
+      <h2>🧭 Nama File → Properti Sky Roblox</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+        <tr style="border-bottom:1px solid var(--border);">
+          <th style="text-align:left;padding:8px;">File</th>
+          <th style="text-align:left;padding:8px;">Properti Sky</th>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px;"><code>px</code> / right</td><td style="padding:8px;">Sky.Right</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px;"><code>nx</code> / left</td><td style="padding:8px;">Sky.Left</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px;"><code>py</code> / top</td><td style="padding:8px;">Sky.Top</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px;"><code>ny</code> / bottom</td><td style="padding:8px;">Sky.Bottom</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px;"><code>pz</code> / back</td><td style="padding:8px;">Sky.Back</td>
+        </tr>
+        <tr>
+          <td style="padding:8px;"><code>nz</code> / front</td><td style="padding:8px;">Sky.Front</td>
+        </tr>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-in">
+      <div>
+        <div class="f-brand">⚡ NX Tools</div>
+        <small>Tools gratis buat komunitas Roblox.</small>
+      </div>
+      <div class="footer-links">
+        <strong style="color:var(--text);">Tools</strong>
+        <a href="../tools/skybox.html">Skybox Converter</a>
+        <a href="../tools/bypaslag.html">Bypass Lag</a>
+      </div>
+      <div class="footer-links">
+        <strong style="color:var(--text);">Komunitas</strong>
+        <a href="#" target="_blank" rel="noopener">Discord</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 NX Tools. Dibuat buat komunitas. ⚡</div>
+  </footer>
+
+  <script src="../assets/js/skybox.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bypass Lag — NX Tools</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <header>
+    <nav class="nav">
+      <a class="brand" href="../">
+        <span class="logo">⚡</span> NX Tools
+      </a>
+      <div class="nav-links">
+        <a href="../">Home</a>
+        <a href="../tools/skybox.html">Skybox Converter</a>
+        <a href="../tools/bypaslag.html" class="active">Bypass Lag</a>
+        <a class="btn-discord" href="#" target="_blank" rel="noopener">Join Discord</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="tool-wrap">
+    <h1 style="margin-top:36px;">🚀 Bypass Lag</h1>
+    <p class="section-sub">Jawab 3 pertanyaan di bawah → dapat rekomendasi setting Roblox biar FPS naik & lag hilang.</p>
+
+    <div class="tool-box">
+      <h2>1. Spek Perangkatmu</h2>
+
+      <label class="field">💻 Perangkat</label>
+      <select id="device">
+        <option value="pc">PC / Laptop Windows</option>
+        <option value="hp">HP Android</option>
+        <option value="ios">iPhone / iPad</option>
+      </select>
+
+      <label class="field">⚙️ Dulu main di setting mana?</label>
+      <select id="quality">
+        <option value="low">1-3 (Low / Minimal)</option>
+        <option value="mid" selected>4-6 (Medium)</option>
+        <option value="high">7-10 (High / Ultra)</option>
+      </select>
+
+      <label class="field">🐢 Lag-nya gimana?</label>
+      <select id="lagtype">
+        <option value="fps">FPS drop / gerakan nggak smooth</option>
+        <option value="ping">Ping tinggi / delay (gerakan nge-freeze bentar)</option>
+        <option value="both" selected>Dua-duanya</option>
+      </select>
+
+      <button class="btn btn-primary" id="cekBtn" style="width:100%;margin-top:20px;">🔍 Cek Rekomendasi</button>
+
+      <div class="recommend" id="output" hidden>
+        <h3>✅ Setting yang Direkomendasiin</h3>
+        <div class="score" id="score">—</div>
+        <ul id="list"></ul>
+      </div>
+    </div>
+
+    <div class="tool-box">
+      <h2>📋 Checklist Anti-Lag</h2>
+      <p class="desc">Centang yang udah kamu lakuin — makin banyak, makin mulus main-nya.</p>
+      <ul class="checklist" id="checklist">
+        <li><input type="checkbox" id="c1"><div><b>Tutup aplikasi berat</b><small>Chrome, Discord, game lain — biar RAM lega.</small></div></li>
+        <li><input type="checkbox" id="c2"><div><b>Charger 100% (HP)</b><small>HP yang nge-drop baterai pas main suka throttling → lag.</small></div></li>
+        <li><input type="checkbox" id="c3"><div><b>Grafis turunin / mode performance</b><small>Roblox Graphic Quality minimal yang masih enak.</small></div></li>
+        <li><input type="checkbox" id="c4"><div><b>Update driver GPU & Windows</b><small>Driver lama bikin game nggak maksimal.</small></div></li>
+        <li><input type="checkbox" id="c5"><div><b>Pakai kabel LAN / WiFi 5GHz</b><small>Kalau masalahnya ping, koneksi adalah kunci.</small></div></li>
+        <li><input type="checkbox" id="c6"><div><b>Restart router / HP</b><small>Cara paling klasik tapi sering manjur.</small></div></li>
+      </ul>
+      <div class="progress" id="ckprog" hidden><div class="bar" id="ckbar"></div></div>
+      <div class="progress-label" id="cklabel" hidden></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-in">
+      <div>
+        <div class="f-brand">⚡ NX Tools</div>
+        <small>Tools gratis buat komunitas Roblox.</small>
+      </div>
+      <div class="footer-links">
+        <strong style="color:var(--text);">Tools</strong>
+        <a href="../tools/skybox.html">Skybox Converter</a>
+        <a href="../tools/bypaslag.html">Bypass Lag</a>
+      </div>
+      <div class="footer-links">
+        <strong style="color:var(--text);">Komunitas</strong>
+        <a href="#" target="_blank" rel="noopener">Discord</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 NX Tools. Dibuat buat komunitas. ⚡</div>
+  </footer>
+
+  <script src="../assets/js/bypaslag.js"></script>
+</body>
+</html>
