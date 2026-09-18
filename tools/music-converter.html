@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Converter — NX Community</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <header>
+    <nav class="nav">
+      <a class="brand" href="../">
+        <span class="logo">⚡</span> NX Community
+      </a>
+      <div class="nav-links">
+        <a href="../">Home</a>
+        <a href="../tools/skybox.html">Skybox Converter</a>
+        <a href="../tools/music-converter.html" class="active">Music Converter</a>
+        <a class="btn-discord" href="https://discord.gg/aydZjztEdy" target="_blank" rel="noopener">Join Discord</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="tool-wrap">
+    <h1 style="margin-top:36px;">🎵 Music Converter</h1>
+    <p class="section-sub">Ubah format audio biar <b>siap upload ke Roblox</b>: convert ke WAV, normalisasi volume, potong yang lebih dari 7 menit, dan buang senyap di awal — jadi upload lancar & nggak gagal.</p>
+
+    <div class="tool-box">
+      <h2>1. Upload Audio</h2>
+      <p class="desc">Format: MP3 / WAV / M4A / OGG. Diproses di browser — file kamu nggak dikirim ke mana-mana.</p>
+
+      <div class="dropzone" id="dropzone">
+        <div><b>Klik / drag file audio di sini</b></div>
+        <div style="margin-top:6px;">MP3 · WAV · M4A · OGG — maks 25 MB</div>
+        <input type="file" id="fileInput" accept="audio/*" hidden>
+      </div>
+
+      <label class="field">Sample rate keluaran (Roblox suka 44100)</label>
+      <select id="samplerate">
+        <option value="22050">22050 Hz (kecil, kualitas ok)</option>
+        <option value="44100" selected>44100 Hz (recommended)</option>
+        <option value="48000">48000 Hz (HD)</option>
+      </select>
+
+      <label class="field">Channel</label>
+      <select id="channels">
+        <option value="1">Mono (paling umum buat musik game)</option>
+        <option value="2" selected>Stereo</option>
+      </select>
+
+      <label class="field">Opsi</label>
+      <ul class="checklist" style="margin-bottom:8px;">
+        <li><input type="checkbox" id="optNormalize" checked><div><b>Normalisasi volume</b><small>Naikin volume ke level aman biar nggak kedengeran kecil di game.</small></div></li>
+        <li><input type="checkbox" id="optTrim" checked><div><b>Potong ke maksimal 7 menit</b><small>Batas upload Roblox — 7 menit (420 detik).</small></div></li>
+        <li><input type="checkbox" id="optSilence" checked><div><b>Hilangkan senyap di awal</b><small>Buang <i>dead air</i> beberapa detik pertama.</small></div></li>
+      </ul>
+
+      <button class="btn btn-primary" id="convertBtn" style="width:100%;margin-top:16px;" disabled>🎛️ Proses & Convert</button>
+
+      <div class="progress" id="progress" hidden>
+        <div class="bar" id="progressBar"></div>
+      </div>
+      <div class="progress-label" id="progressLabel" hidden></div>
+
+      <div class="result" id="result" hidden>
+        <h3 style="margin-bottom:8px;">✅ Udah siap!</h3>
+        <p style="color:var(--muted);font-size:0.9rem;" id="resultInfo"></p>
+        <div style="display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;">
+          <button class="btn btn-primary" id="downloadBtn">⬇ Download WAV</button>
+          <label class="btn btn-ghost" style="cursor:pointer;" for="fileInput">🔄 Convert lagu lain</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-box">
+      <h2>ℹ️ Cara Upload ke Roblox</h2>
+      <ul style="padding-left:20px;">
+        <li style="margin-bottom:6px;">Buka <b>Roblox Creator Hub → Audio</b> (atau <b>Game Explorer → Audio</b> di Studio).</li>
+        <li style="margin-bottom:6px;">Upload file WAV hasil convert ini — pastiin durasi <b>≤ 7 menit</b> (udah kupotongin otomatis).</li>
+        <li style="margin-bottom:6px;">Isi nama & deskripsi, centang bahwa kamu punya hak atas audio itu.</li>
+        <li>Kalau upload nggak diizinkan: pakai audio yang <b>bebas hak cipta</b> (Roblox Audio Library / YouTube Audio Library) — bukan musik ber-copyright.</li>
+      </ul>
+    </div>
+
+    <div class="tool-box">
+      <h2>⚠️ Soal Copyright</h2>
+      <p class="desc">
+        Converter ini hanya perbaiki <b>format & kualitas</b> audio — bukan alat buat nyamarin lagu berhak cipta.
+        Roblox punya deteksi copyright yang bisa nge-takedown & nge-ban akun. Buat musik bebas: pakai
+        <b>Roblox Audio Library</b>, <b>YouTube Audio Library</b>, atau musik berlisensi yang kamu pegang.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-in">
+      <div>
+        <div class="f-brand">⚡ NX Community</div>
+        <small>Tools gratis buat komunitas Roblox.</small>
+      </div>
+      <div class="footer-links">
+        <strong style="color:var(--text);">Tools</strong>
+        <a href="../tools/skybox.html">Skybox Converter</a>
+        <a href="../tools/music-converter.html">Music Converter</a>
+      </div>
+      <div class="footer-links">
+        <strong style="color:var(--text);">Komunitas</strong>
+        <a href="https://discord.gg/aydZjztEdy" target="_blank" rel="noopener">Discord</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 NX Community. Dibuat buat komunitas. ⚡</div>
+  </footer>
+
+  <script src="../assets/js/music-converter.js"></script>
+</body>
+</html>
