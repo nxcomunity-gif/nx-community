@@ -9,6 +9,8 @@
   var optNormalize = document.getElementById("optNormalize");
   var optTrim = document.getElementById("optTrim");
   var optSilence = document.getElementById("optSilence");
+  var volSlider = document.getElementById("volSlider");
+  var volLabel = document.getElementById("volLabel");
   var convertBtn = document.getElementById("convertBtn");
   var progress = document.getElementById("progress");
   var progressBar = document.getElementById("progressBar");
@@ -82,6 +84,7 @@
     var outRate = parseInt(srSel.value, 10);
     var outCh = parseInt(chSel.value, 10);
     var durSource = sourceBuffer.duration;
+    var volume = parseFloat(volSlider.value) || 1; // 0.1 - 2.0
 
     convertBtn.disabled = true;
     result.hidden = true;
@@ -153,6 +156,24 @@
       }
     }
 
+    // Terapkan volume user (0.1 - 2.0). Kalau >1, cegah clipping.
+    if (volume !== 1) {
+      var vpeak = 1e-6;
+      for (var vc = 0; vc < rendered.numberOfChannels; vc++) {
+        var vch = rendered.getChannelData(vc);
+        for (var vk = 0; vk < vch.length; vk++) {
+          var vab = Math.abs(vch[vk]);
+          if (vab > vpeak) vpeak = vab;
+        }
+      }
+      var vgain = volume;
+      if (vpeak * volume > 0.98) vgain = 0.98 / vpeak; // kurangi biar nggak pecah (clip)
+      for (var vc2 = 0; vc2 < rendered.numberOfChannels; vc2++) {
+        var vch2 = rendered.getChannelData(vc2);
+        for (var vk2 = 0; vk2 < vch2.length; vk2++) vch2[vk2] *= vgain;
+      }
+    }
+
     setProgress(90, "Encode WAV…");
 
     var channels = [];
@@ -173,6 +194,7 @@
     catatan.push(sizeMB + " MB");
     catatan.push(outRate + " Hz");
     catatan.push(outCh === 1 ? "Mono" : "Stereo");
+    catatan.push("Volume " + volume.toFixed(1) + "×");
 
     resultInfo.innerHTML =
       "<b>" + sourceName + "</b><br>" +
@@ -204,7 +226,7 @@
       try {
         var AudioCtx = window.AudioContext || window.webkitAudioContext;
         var ctx = new AudioCtx();
-        var arr = await e.target.result.arrayBuffer();
+        var arr = e.target.result; // udah ArrayBuffer dari readAsArrayBuffer
         sourceBuffer = await ctx.decodeAudioData(arr);
         ctx.close();
         convertBtn.disabled = false;
@@ -219,6 +241,10 @@
   }
 
   convertBtn.addEventListener("click", convert);
+
+  volSlider.addEventListener("input", function () {
+    volLabel.textContent = parseFloat(volSlider.value).toFixed(1) + "×";
+  });
 
   dropzone.addEventListener("click", function () { fileInput.click(); });
   fileInput.addEventListener("change", function () { loadFile(fileInput.files[0]); });
